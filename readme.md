@@ -101,5 +101,6 @@ type SomeType implements Interface {
 #### apollo data source
 - Apollo data source is a class that encapsulates all of the data fetching logic
 - It manage in memory cache. (partial query caching)
-
-#### RESTDataSource 
+- Data reducer function format data from restful api into schema typed data.
+- Does this kind of function returns a promise or not ?
+- create data source and add them to apollo server 

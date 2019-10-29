@@ -11,7 +11,17 @@ class LaunchAPI extends RESTDataSource {
 		return Array.isArray(response) ? response.map(launch => this.launchReducer(launch))
 			: []
 	}
-  
+	
+	async getLaunchById({ launchId }) {
+		const response = await this.get('launches', { flight_number: launchId })
+		return this.launchReducer(response[0])
+	}
+
+	getLaunchesByIds({ launchIds }) {
+		return Promise.all(
+			launchIds.map(launchId => this.getLaunchById({ launchId })),
+		)
+	}
 
 	launchReducer(launch) {
 		// decouple your graph API from business logic specific to your REST API

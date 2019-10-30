@@ -98,9 +98,47 @@ type SomeType implements Interface {
 ```
 
 ### Hook up data source to graphql api
+
+Data sources are classes that encapsulate fetching data.
+
+#### RESTDataSource
+
+Fetching data from REST API.
+1. create class who extends RESTDATASource
+2. put baseURL in constructor
+3. create async manipulating functions and return promise (this.get/post/put/delelte)
+4. We can add request headers, query strings and adapt for typescript with **RequestOptions**.
+
+```js
+class extends RESTDATASource {
+  constructor(){
+    super()
+    this.baseURL = ''
+  }
+  
+  willSendRequest(request){
+    request.headers.set('Authorization', this.context.token)
+    request.params.set('queryString', this.context.queryString)
+  }
+
+  async resolveURL(request){
+    // resolve url dynamically
+    // https://www.apollographql.com/docs/apollo-server/data/data-sources/#resolving-urls-dynamically
+
+  }
+
+  async getById(id){
+    return this.get(`x/${id}`)
+  }
+  async post(something){
+    return this.post('x', something)
+  }
+}
+```
+
 #### apollo data source
 - Apollo data source is a class that encapsulates all of the data fetching logic
 - It manage in memory cache. (partial query caching)
 - Data reducer function format data from restful api into schema typed data.
-- Does this kind of function returns a promise or not ?
 - create data source and add them to apollo server 
+- Apollo Server will put the data sources on the context for every request, so you can access them from your resolvers. It will also give your data sources access to the context.  ?????

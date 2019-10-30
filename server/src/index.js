@@ -6,11 +6,15 @@ const UserAPI = require('./datasources/user')
 
 const store = createStore() 
 
+// pass schema, data source, context to server
 const server = new ApolloServer({ typeDefs,
 	dataSources: () => ({
 		launchAPI: new LaunchAPI(),
 		userAPI: new UserAPI({ store })
-	}) }) // pass schema to server
+	}),
+	context: () => {
+		return {}
+	} }) 
 
 server.listen().then(({ url }) => {
 	console.log(`🚀 Server ready at ${url}`)

@@ -1,10 +1,9 @@
 const { gql } = require('apollo-server')
-const typedefs = gql`
+const typeDefs = gql`
   # schema goes here
   type Query {
-    launches: [Launch]!
-    launch(id: ID!): Launch # take parameter
-    # Queries for the current user
+    launches: [Launch]
+    launch(id: ID!): Launch
     me: User
   }
 
@@ -54,4 +53,4 @@ const typedefs = gql`
   }
 `
 
-module.exports = typedefs
+module.exports = typeDefs

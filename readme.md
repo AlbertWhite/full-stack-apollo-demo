@@ -142,3 +142,17 @@ class extends RESTDATASource {
 - Data reducer function format data from restful api into schema typed data.
 - create data source and add them to apollo server 
 - Apollo Server will put the data sources on the context for every request, so you can access them from your resolvers. It will also give your data sources access to the context.  ?????
+
+#### Resolvers
+Turning graphql operation(query, mutation, subscription) into data.
+
+- dataSources will automatically added to the resolver's context
+- Resolver function:
+```js
+(parent, args, context, info) => data
+```
+Resolver function returns data object or promise.
+Resolver function can take _ and __ as parameters for a whatever value.
+
+#### Write Query
+Write query, find field to query and make the selection of sub field.

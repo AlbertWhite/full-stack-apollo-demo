@@ -1,14 +1,14 @@
 // require('dotenv').config();
 
 const { ApolloServer } = require('apollo-server')
-
+const isEmail = require('isemail')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const { createStore } = require('./utils')
 
 const LaunchAPI = require('./datasources/launch')
 const UserAPI = require('./datasources/user')
-
+const internalEngineDemo = require('./engine-demo')
 
 // creates a sequelize connection once. NOT for every request
 const store = createStore()
@@ -20,7 +20,17 @@ const dataSources = () => ({
 })
 
 // the function that sets up the global context for each resolver, using the req
-const context = {}
+const context = async ({ req }) => {
+	// simple auth check on every request
+	const auth = req.headers && req.headers.authorization || ''
+	const email = new Buffer.from(auth, 'base64').toString('ascii') // get email from authorization request header
+	if (!isEmail.validate(email)) return { user: null }
+	// find a user by their email
+	const users = await store.users.findOrCreate({ where: { email } })
+	const user = users && users[0] ? users[0] : null
+
+	return { user: { ...user.dataValues } } // add user to context
+}
 
 // Set up Apollo Server
 const server = new ApolloServer({
@@ -28,6 +38,10 @@ const server = new ApolloServer({
 	resolvers,
 	dataSources,
 	context,
+	engine: {
+		apiKey: process.env.ENGINE_API_KEY,
+		...internalEngineDemo,
+	},
 	// formatError: error => {
 	// 	console.log('error', error)
 	// 	return error

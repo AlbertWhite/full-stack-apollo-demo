@@ -108,7 +108,7 @@ Data sources are classes that encapsulate fetching data.
 Fetching data from REST API.
 1. create class who extends RESTDATASource
 2. put baseURL in constructor
-3. create async manipulating functions and return promise (this.get/post/put/delelte)
+3. create async manipulating functions and return promise (this.get/post/put/delelte). It is possible to add subUrl, querystring and payload.
 4. We can add request headers, query strings and adapt for typescript with **RequestOptions**.
 
 ```js
@@ -160,9 +160,11 @@ Turning graphql operation(query, mutation, subscription) into data.
 Resolver function returns data object or promise.
 Resolver function can take _ and __ as parameters for a whatever value.
 
-- Resolve types
+- Resolve types (chain resolve functions)
 We can not only resolve fields Query (as entries), but also resolve type to modify the field object.  
 Parent param is necessary for resolve type. 
+
+### Mutation with authentication
 
 ### Write Query
 Write query, find field to query and make the selection of sub field.
@@ -196,3 +198,21 @@ formatError: error => {
     return response;
   },
 ```
+
+### Authentication
+#### Authentication from authentication token from request header
+1. Pass authentication token to request header. 
+2. In Context, we can get request headers.
+3. (By authentication token, we can get current user information from database.)
+4. With user inforamtion from context, we can make modifications in data sources. 
+
+#### Authentication in data models
+
+### Client side
+- **useQuery** hooks
+- RenderProps (children)
+```js 
+  <Query/> 
+``` 
+
+### [Notion list](https://www.apollographql.com/docs/resources/graphql-glossary/)

@@ -29,7 +29,7 @@ const typeDefs = gql`
 
   type Mission {
     name: String
-    missionPatch(size: PatchSize): String
+    missionPatch(size: PatchSize): String # it is possible to pass param to this field
   }
 
   type TripUpdateResponse {

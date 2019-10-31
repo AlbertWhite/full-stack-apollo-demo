@@ -27,7 +27,15 @@ const server = new ApolloServer({
 	typeDefs,
 	resolvers,
 	dataSources,
-	context
+	context,
+	// formatError: error => {
+	// 	console.log('error', error)
+	// 	return error
+	// },
+	// formatResponse: response => {
+	// 	console.log('response', response)
+	// 	return response
+	// },
 })
 
 // Start our server if we're not in a test env.

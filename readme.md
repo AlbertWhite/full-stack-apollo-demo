@@ -1,5 +1,7 @@
 Apollo is best used as a new layer in your stack between service and apps.
 
+“你如果要，我才给你。”
+
 ### sdl
 #### comment and description
 - description supports markdown in, used by describing the schema, to be used in graphql playground or vs code plugin. 
@@ -143,7 +145,11 @@ class extends RESTDATASource {
 - create data source and add them to apollo server 
 - Apollo Server will put the data sources on the context for every request, so you can access them from your resolvers. It will also give your data sources access to the context.  ?????
 
-#### Resolvers
+#### Write fieldReducer
+Why reducer is necessary:
+Map data received from REST API to the schema we defined. (Data formatting server side according to our need. )
+
+### Resolvers
 Turning graphql operation(query, mutation, subscription) into data.
 
 - dataSources will automatically added to the resolver's context
@@ -154,5 +160,39 @@ Turning graphql operation(query, mutation, subscription) into data.
 Resolver function returns data object or promise.
 Resolver function can take _ and __ as parameters for a whatever value.
 
-#### Write Query
+- Resolve types
+We can not only resolve fields Query (as entries), but also resolve type to modify the field object.  
+Parent param is necessary for resolve type. 
+
+### Write Query
 Write query, find field to query and make the selection of sub field.
+
+#### Write query with params
+```graphql
+query SomeQuery($param: ID!){
+  someField(id: $param){
+
+  }
+}
+
+Params: 
+{"param": xx}
+
+```
+
+#### It is possible to pass param to every field
+Write resolver function to resolve the param and format the response for field object. 
+
+### Log
+[high level logging](https://www.apollographql.com/docs/apollo-server/monitoring/metrics/#high-level-logging)
+
+```js
+formatError: error => {
+    console.log(error);
+    return error;
+  },
+  formatResponse: response => {
+    console.log(response);
+    return response;
+  },
+```

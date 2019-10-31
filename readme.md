@@ -216,3 +216,6 @@ formatError: error => {
 ``` 
 
 ### [Notion list](https://www.apollographql.com/docs/resources/graphql-glossary/)
+
+### Apollo Client
+Apollo Client has built-in helpers to make adding pagination

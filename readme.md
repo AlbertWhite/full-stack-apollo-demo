@@ -219,3 +219,6 @@ formatError: error => {
 
 ### Apollo Client
 Apollo Client has built-in helpers to make adding pagination
+
+Finish with step 6 because it begins to touch the concept of local storage, the server is not completed.
+A problem with this tutorial is that it tries to combine lots of things in one tutorial.

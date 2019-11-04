@@ -222,3 +222,11 @@ Apollo Client has built-in helpers to make adding pagination
 
 Finish with step 6 because it begins to touch the concept of local storage, the server is not completed.
 A problem with this tutorial is that it tries to combine lots of things in one tutorial.
+
+### Cache
+Remote data from graphAPI, and local data. Store local data inside Apollo cache.
+
+**No Redux**
+We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
+
+#### Client Schema and Resolver for local data

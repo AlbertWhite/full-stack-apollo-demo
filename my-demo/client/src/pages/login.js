@@ -17,7 +17,7 @@ export default function Login() {
     {
       onCompleted({ login }) {
         localStorage.setItem('token', login);
-        client.writeData({ data: { isLoggedIn: true } }); // we also call client.writeData to write local data to the Apollo cache 
+        client.writeData({ data: { isLoggedIn: true } });  
       }
     }
   );

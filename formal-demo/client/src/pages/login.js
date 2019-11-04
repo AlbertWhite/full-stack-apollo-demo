@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 
 import { LoginForm, Loading } from '../components';
 
+// define mutation
 export const LOGIN_USER = gql`
   mutation login($email: String!) {
     login(email: $email)
@@ -12,10 +13,14 @@ export const LOGIN_USER = gql`
 
 export default function Login() {
   const client = useApolloClient();
-  const [login, { loading, error }] = useMutation(
+
+  // return callback function to be excuted
+  const [login, { loading, error }] = useMutation( 
     LOGIN_USER,
     {
-      onCompleted({ login }) {
+      // callback function after successful mutation
+      onCompleted({ login }) { 
+        // why use localStorage instead of cache here? maybe it is because localStorage can save more data
         localStorage.setItem('token', login);
         client.writeData({ data: { isLoggedIn: true } });
       }
@@ -25,5 +30,6 @@ export default function Login() {
   if (loading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
+  // pass mutation callback function as props to be used for submitting
   return <LoginForm login={login} />;
 }

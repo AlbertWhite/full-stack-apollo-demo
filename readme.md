@@ -244,13 +244,32 @@ Define resolvers and typeDefs on client side, and import to ApolloClient
 On client side resolver, **cache** is in the context (the thid param), like **dataSource** in the context on resolver of server side. 
 
 #### Interact with cache data
-- [doc](https://www.apollographql.com/docs/react/data/local-state/#updating-local-state)
+- [doc: update local state](https://www.apollographql.com/docs/react/data/local-state/#updating-local-state)
+- [another doc: update local data](https://www.apollographql.com/docs/tutorial/local-state/#update-local-data)
 - **cache.writeData** write cache data
+In the update option for useMutation, cache is the default param.
+```js
+useMutation(gql, {
+  update(cache) {
+    cache.writeData...
+  }
+
+})
+```
 - @client directive
 Use @client directive next to the field. This tells Apollo Client to fetch data locally (from cache or from local resolver), instead of sending it to graphQL server. 
 - **cache.readQuery** get data from your cache.
 [doc](https://www.apollographql.com/docs/react/data/local-state/#writequery-and-readquery)
 - **cache.writeQuery** the same as **cache.writeData**
+- **client.writeData**
+Always used after mutation in the callback onCompleted.
+
+- cache.writeData and client.writeData
+The same effect, different usage.
+
+client can be got from useApolloClient.
+
+cache is from the update option from useMutation.
 
 
 ### Client side hooks
@@ -266,6 +285,20 @@ const {loading, error, data} = useQuery(gql, options)
   <Query/> 
 ``` 
 
+- **useMutation**
+[doc](https://www.apollographql.com/docs/react/data/mutations/#options)
+```js
+[mutationFunction, {loading, error}] = useMutation(gql, optiions)
+```
+
+In options, we can use **OnCompleted** for the callback after mutaiton. The received data is the default input for OnCompleted function.
+
+In the mutation function, we can pass options like **variables**.
+
+- **useApolloClient**
+get apolloClient to be used for client.writeData
+
+
 ### graphql Directive
 - client directive
 - skip and include directive
@@ -278,3 +311,18 @@ query myAwesomeQuery($isAwesome: Boolean) {
   awesomeField @include(if: $isAwesome)
 }
 ```
+
+### pagination
+
+### fragment
+Write fragment for share fields between queries..
+```graphql
+fragment XX on SomeType{
+
+}
+
+```
+
+### debug
+(graphql chrome extension)[https://chrome.google.com/webstore/detail/graphql-developer-tools/hflnkihcpgldmkepajmpooacmmhglpff] track queries and mutations.
+

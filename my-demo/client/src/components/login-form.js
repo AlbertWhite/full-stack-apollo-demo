@@ -19,30 +19,23 @@ export default class LoginForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
+    // call the mutation callback function with variable
     this.props.login({ variables: { email: this.state.email } });
   };
 
   render() {
     return (
-      <Container>
-        <Header>
-          <StyledCurve />
-          <StyledLogo />
-        </Header>
-        <StyledRocket />
-        <Heading>Space Explorer</Heading>
-        <StyledForm onSubmit={this.onSubmit}>
-          <StyledInput
-            required
-            type="email"
-            name="email"
-            placeholder="Email"
-            data-testid="login-input"
-            onChange={this.onChange}
-          />
-          <Button type="submit">Log in</Button>
-        </StyledForm>
-      </Container>
+      <StyledForm onSubmit={this.onSubmit}>
+        <StyledInput
+          required
+          type="email"
+          name="email"
+          placeholder="Email"
+          data-testid="login-input"
+          onChange={this.onChange}
+        />
+        <Button type="submit">Log in</Button>
+      </StyledForm>
     );
   }
 }

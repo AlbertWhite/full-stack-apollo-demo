@@ -208,25 +208,73 @@ formatError: error => {
 
 #### Authentication in data models
 
-### Client side
+
+### [Notion list](https://www.apollographql.com/docs/resources/graphql-glossary/)
+
+## Apollo Client
+- Query and mutation hooks, cache for local state management, pagination support.
+- The names of query and mutation should be in PascalCase.
+
+### Network Layer: Apollo Link
+- [doc](https://www.apollographql.com/docs/react/networking/network-layer/)
+- the configuration is like the config for **fetch**
+
+
+### Cache
+Remote data from graphAPI, and local data. Store local data inside Apollo cache.
+
+**When you're using Apollo Client to work with local state, your Apollo cache becomes the single source of truth for all of your local and remote data.**
+
+**No Redux**
+We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
+
+#### InMemoryCache
+- [cache config](https://www.apollographql.com/docs/react/caching/cache-configuration/)
+- initialization and pass to ApolloClient
+```js
+const client = new ApolloClient({
+  link: new HttpLink(),
+  cache: new InMemoryCache()
+});
+```
+
+#### Client Schema and Resolver for local data
+Define resolvers and typeDefs on client side, and import to ApolloClient 
+
+On client side resolver, **cache** is in the context (the thid param), like **dataSource** in the context on resolver of server side. 
+
+#### Interact with cache data
+- [doc](https://www.apollographql.com/docs/react/data/local-state/#updating-local-state)
+- **cache.writeData** write cache data
+- @client directive
+Use @client directive next to the field. This tells Apollo Client to fetch data locally (from cache or from local resolver), instead of sending it to graphQL server. 
+- **cache.readQuery** get data from your cache.
+[doc](https://www.apollographql.com/docs/react/data/local-state/#writequery-and-readquery)
+- **cache.writeQuery** the same as **cache.writeData**
+
+
+### Client side hooks
 - **useQuery** hooks
+[doc](https://www.apollographql.com/docs/react/api/react-hooks/#usequery)
+
+```js
+const {loading, error, data} = useQuery(gql, options)
+```
+
 - RenderProps (children)
 ```js 
   <Query/> 
 ``` 
 
-### [Notion list](https://www.apollographql.com/docs/resources/graphql-glossary/)
+### graphql Directive
+- client directive
+- skip and include directive
+```graphql
+query myAwesomeQuery($isAwesome: Boolean) {
+  awesomeField @skip(if: $isAwesome) #skip directive
+}
 
-### Apollo Client
-Apollo Client has built-in helpers to make adding pagination
-
-Finish with step 6 because it begins to touch the concept of local storage, the server is not completed.
-A problem with this tutorial is that it tries to combine lots of things in one tutorial.
-
-### Cache
-Remote data from graphAPI, and local data. Store local data inside Apollo cache.
-
-**No Redux**
-We recommend managing local state in the Apollo cache instead of bringing in another state management library like Redux so the Apollo cache can be a single source of truth.
-
-#### Client Schema and Resolver for local data
+query myAwesomeQuery($isAwesome: Boolean) {
+  awesomeField @include(if: $isAwesome)
+}
+```

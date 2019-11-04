@@ -56,6 +56,7 @@ export default function Launches() {
                   after: data.launches.cursor,
                 },
 
+                // https://www.apollographql.com/docs/react/data/pagination/#cursor-based
                 updateQuery: (prev, { fetchMoreResult, ...rest }) => {
                   if (!fetchMoreResult) return prev;
                   return {

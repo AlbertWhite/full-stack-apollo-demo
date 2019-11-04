@@ -313,6 +313,18 @@ query myAwesomeQuery($isAwesome: Boolean) {
 ```
 
 ### pagination
+- [doc](https://www.apollographql.com/docs/react/data/pagination/)
+#### Two ways
+- [article](https://blog.apollographql.com/understanding-pagination-rest-graphql-and-relay-b10f835549e7)
+- numbered pages (offset based)
+- cursors
+we need: to cursor to start with, and the number of items.
+
+#### fetchMore
+```graphql
+const {fetchMore} = useQuery(gql)
+
+``` 
 
 ### fragment
 Write fragment for share fields between queries..

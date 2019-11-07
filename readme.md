@@ -316,15 +316,38 @@ query myAwesomeQuery($isAwesome: Boolean) {
 - [doc](https://www.apollographql.com/docs/react/data/pagination/)
 #### Two ways
 - [article](https://blog.apollographql.com/understanding-pagination-rest-graphql-and-relay-b10f835549e7)
-- numbered pages (offset based)
+- offset based
+One downside of pagination with numbered pages or offsets is that an item can be skipped or returned twice when items are inserted into or removed from the list at the same time.
+Offset based is not suitable for dynamic list.
+
 - cursors
-we need: to cursor to start with, and the number of items.
+we need: to cursor to start with, and the number of items (limit).
 
 #### fetchMore
-```graphql
+```js
+// define gql
+
 const {fetchMore} = useQuery(gql)
 
+fetchMore({
+  query: SOME_OTHER_QUERY // this field can be omitted if it is the same query as used in the query component
+  variables: {
+    // the variable here will overwrite the variable passed to the variable from useQuery query.
+  },
+  updateQuery: (prev, {fetchMoreResult}) => {
+    if(!fetchMoreResult) return prev
+    return {
+      // combine fetchMoreResult with prev
+    }
+  }
+})
 ``` 
+
+- example with [offset based](https://www.apollographql.com/docs/react/data/pagination/#offset-based)
+Pass offset (data length) to the variable of the fetchMore function. 
+
+- example with [cursor based](https://www.apollographql.com/docs/react/data/pagination/#cursor-based)
+Pass cursor returned from query as the variable to the fetchMore function. 
 
 ### fragment
 Write fragment for share fields between queries..
@@ -336,5 +359,12 @@ fragment XX on SomeType{
 ```
 
 ### debug
-(graphql chrome extension)[https://chrome.google.com/webstore/detail/graphql-developer-tools/hflnkihcpgldmkepajmpooacmmhglpff] track queries and mutations.
+- (graphql chrome extension)[https://chrome.google.com/webstore/detail/graphql-developer-tools/hflnkihcpgldmkepajmpooacmmhglpff] track queries and mutations.
+- It is useful to see the network tools
 
+问题：
+- 什么样的数据用cache来存储，什么样的数据和graphQL进行交互 ？
+- 和cache的read和write最推荐用哪种方式？
+- authorization是那种形式？
+- 是否涉及到真实的数据库操作？
+- backend的逻辑：schema, resolver, dataSource

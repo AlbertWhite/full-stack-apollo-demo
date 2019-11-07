@@ -2,7 +2,7 @@ const { gql } = require('apollo-server')
 const typeDefs = gql`
   # schema goes here
   type Query {
-    launches: [Launch]
+    launches(pageSize: Int, after: String): LaunchConnection!
     launch(id: ID!): Launch
     me: User
   }
@@ -36,6 +36,17 @@ const typeDefs = gql`
     success: Boolean!
     message: String
     launches: [Launch]
+  }
+
+  """
+  Simple wrapper around our list of launches that contains a cursor to the
+  last item in the list. Pass this cursor to the launches query to fetch results
+  after these.
+  """
+  type LaunchConnection {
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
   }
 
   type Mutation {

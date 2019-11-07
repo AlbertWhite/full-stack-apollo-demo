@@ -48,6 +48,8 @@ const IS_LOGGED_IN = gql`
   }
 `
 
+console.warn('alb',{IS_LOGGED_IN});
+
 // run query on the cache to determine the page to show
 const Component = () => {
   const { data } = useQuery(IS_LOGGED_IN);
